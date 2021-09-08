@@ -1,0 +1,13 @@
+---
+Name: nswdpc-gridhelper-config
+---
+
+---
+Name: nswdpc-gridhelper-elementlist
+Only:
+  moduleexists: 'dnadesign/silverstripe-elemental-list'
+---
+DNADesign\ElementalList\Model\ElementList:
+  extensions:
+    - 'NSWDPC\GridHelper\Extensions\ElementHasChildrenExtension'
+    - 'NSWDPC\GridHelper\Extensions\ElementChildGridExtension'

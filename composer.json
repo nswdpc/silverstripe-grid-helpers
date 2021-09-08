@@ -1,0 +1,26 @@
+{
+    "name": "nswdpc/silverstripe-grid-helpers",
+    "description": "Allow an editor to specify how lists of elements and elements should render, based on your theme",
+    "type": "silverstripe-vendormodule",
+    "keywords": [
+        "silverstripe",
+        "grid",
+        "layout",
+        "elemental"
+    ],
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "James Ellis",
+            "homepage": "https://dpc.nsw.gov.au",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "dnadesign/silverstripe-elemental": "^4",
+        "unclecheese/display-logic": "^2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.7"
+    }
+}
