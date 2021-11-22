@@ -22,7 +22,7 @@ class ElementChildGridExtension extends DataExtension
      * @var array
      */
     private static $db = [
-        'CardColumns' => 'Varchar(64)' // grid columns at lg breakpoint
+        'CardColumns' => 'Int(4)' // grid columns at lg breakpoint
     ];
 
     /**
@@ -75,21 +75,20 @@ class ElementChildGridExtension extends DataExtension
 
     /**
      * Return the CSS class representing a grid
-     * @param string $lg the number of large columns eg 3. An empty string, the default defers to the selected CardColumns value
+     * @param int|null $lg the number of large columns eg 3. Default=null meaning defer to the selected CardColumns value
      * @param int $max the max grid size. Used to work out the CSS class. $max/$lg =  grid 'width'
      * @param int $xs number of columns at XS media size, default = 1 col @ 100% width
      * @param int $sm number of columns at SM media size, default = 2 cols @ 50% width
      * @param int $md number of columns at MD media size, default = 3 cols @ 33.3% width
      * @param mixed $xl number of columns at XL media size, if supported, default = none
      */
-    public function ColumnClass($lg = '', $max = 12, $xs = 1, $sm = 2, $md = 3, $xl = '') : string
+    public function ColumnClass($lg = null, $max = 12, $xs = 1, $sm = 2, $md = 3, $xl = null) : string
     {
-        // If there are no override columns from code, use the saved field value
-        $lg = trim($lg);
-        if($lg) {
-            $columns = $lg;
+
+        if(is_int($lg)) {
+            $desktopColumns = $lg;
         } else {
-            $columns = $this->owner->CardColumns;
+            $desktopColumns = $this->owner->CardColumns;
         }
 
         $max = trim($max);
@@ -97,11 +96,15 @@ class ElementChildGridExtension extends DataExtension
             $max = $this->getConfigurator()->config()->get('max_columns');
         }
 
-        if(!$columns) {
+        if(!$desktopColumns) {
             return '';
         } else {
 
-            $gridLg = ceil($max / $columns);
+            $xs = $this->getConfigurator()->getGridValue($xs, $desktopColumns);
+            $sm = $this->getConfigurator()->getGridValue($sm, $desktopColumns);
+            $md = $this->getConfigurator()->getGridValue($md, $desktopColumns);
+
+            $gridLg = ceil($max / $desktopColumns);
             $gridXs = ceil($max / $xs);
             $gridSm = ceil($max / $sm);
             $gridMd = ceil($max / $md);
@@ -115,6 +118,7 @@ class ElementChildGridExtension extends DataExtension
 
             $gridXl = null;
             if($xl > 0) {
+                $xl = $this->getConfigurator()->getGridValue($xl, $desktopColumns);
                 $gridXl = ceil($max / $xl);
             }
             if($gridXl) {
