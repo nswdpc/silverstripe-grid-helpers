@@ -8,7 +8,7 @@ use SilverStripe\Core\Config\Config;
 use SilverStripe\Dev\SapphireTest;
 
 /**
- * Provide tests for a single gallery video
+ * Column class test
  */
 class ColumnClassTest extends SapphireTest {
 
