@@ -50,6 +50,12 @@ class Configuration {
     ];
 
     /**
+     * Default "lg" viewport number of columns
+     * @var int
+     */
+    private static $default_lg_column_count = 4;
+
+    /**
      * @var bool
      * When true, grid columns > than the supplied desktop columns value
      * will be made = to the desktop value
