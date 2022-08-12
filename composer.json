@@ -18,7 +18,7 @@
     ],
     "require": {
         "dnadesign/silverstripe-elemental": "^4",
-        "silverstripe/framework": "^4.1.0",
+        "silverstripe/framework": "^4.10.0",
         "unclecheese/display-logic": "^2"
     },
     "require-dev": {
