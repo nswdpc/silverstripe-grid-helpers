@@ -32,15 +32,22 @@ class ColumnCountTest extends SapphireTest {
 
     public function testColumnCount() {
         $defaultLargeColumnCount = Configuration::config()->get('default_lg_column_count');
-
         $obj = ColumnCountModel::create([
             'Title' => 'Test model'
         ]);
         $obj->write();
+        $this->assertEquals($defaultLargeColumnCount, $obj->CardColumns);
+    }
 
-        var_dump($obj->CardColumns);
-
-        $this->assertEquals($defaultLargeColumnCount, 4);
+    public function testColumnSpecificCount() {
+        $defaultLargeColumnCount = Configuration::config()->get('default_lg_column_count');
+        $specificCount = 2;
+        Config::modify()->set(ColumnCountModel::class, 'grid_default_lg_column_count', $specificCount);
+        $obj = ColumnCountModel::create([
+            'Title' => 'Test model with specific column count'
+        ]);
+        $obj->write();
+        $this->assertEquals($specificCount, $obj->CardColumns);
     }
 
 }
