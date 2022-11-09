@@ -3,6 +3,7 @@
 namespace NSWDPC\GridHelper\Extensions;
 
 use NSWDPC\GridHelper\Models\Configuration;
+use SilverStripe\Core\Config\Config;
 use Silverstripe\Core\Injector\Injector;
 use Silverstripe\ORM\DataExtension;
 use Silverstripe\Forms\FieldList;
@@ -22,15 +23,7 @@ class ElementChildGridExtension extends DataExtension
      * @var array
      */
     private static $db = [
-        'CardColumns' => 'Int(4)' // grid columns at lg breakpoint
-    ];
-
-    /**
-     * Default values
-     * @var array
-     */
-    private static $defaults = [
-        'CardColumns' => 4 // at lg breakpoint
+        'CardColumns' => 'Int' // grid columns at lg breakpoint
     ];
 
     /**
@@ -64,6 +57,21 @@ class ElementChildGridExtension extends DataExtension
             ]
         );
 
+    }
+
+    /**
+     * Ensure default column count is written if not set
+     * Allow the owner class to set it's own default via configuration
+     */
+    public function onBeforeWrite() {
+        if(!$this->owner->CardColumns) {
+            $defaultLargeColumnCount = Configuration::config()->get('default_lg_column_count');
+            $ownerDefaultCount = Config::inst()->get( get_class($this->owner), 'grid_default_lg_column_count');
+            if($ownerDefaultCount) {
+                $defaultLargeColumnCount = $ownerDefaultCount;
+            }
+            $this->owner->CardColumns = $defaultLargeColumnCount;
+        }
     }
 
     /**
