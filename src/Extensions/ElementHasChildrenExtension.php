@@ -34,6 +34,7 @@ class ElementHasChildrenExtension extends DataExtension
     private static $subtypes = [
         'accordion' => 'Accordion',
         'cards' => 'Cards',
+        'card-carousel' => 'Card Carousel',
         'content-blocks' => 'Content Blocks',
         'grid' => 'Grid',
         'linklist' => 'Link list',
@@ -87,6 +88,7 @@ class ElementHasChildrenExtension extends DataExtension
         $cardStyle->setEmptyString('none');
         $cardStyle->displayIf('Subtype')
             ->isEqualTo('cards')
+            ->orIf("Subtype")->isEqualTo("card-carousel")
             ->orIf("Subtype")->isEqualTo("content-blocks")
             ->orIf("Subtype")->isEqualTo("listitem");
 
