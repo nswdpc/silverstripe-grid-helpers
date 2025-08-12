@@ -48,7 +48,10 @@ class ElementDisplayChoiceExtension extends DataExtension
                 LiteralField::create(
                     'Subtype_Message',
                     '<p class="message info">'
-                        . _t('gridhelpers.ELEMENT_IN_LIST', 'This element is within a list, which sets the display options')
+                    . htmlspecialchars(_t(
+                        'gridhelpers.ELEMENT_IN_LIST',
+                        'This element is within a list, which sets the display options'
+                    ))
                     . '</p>'
                 )
             );
