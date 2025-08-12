@@ -35,5 +35,11 @@
             "composer/installers": true,
             "silverstripe/vendor-plugin": true
         }
+    },
+    "autoload": {
+        "psr-4": {
+            "NSWDPC\\GridHelper\\": "src/",
+            "NSWDPC\\GridHelper\\Tests\\" : "tests/"
+        }
     }
 }
