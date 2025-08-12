@@ -30,7 +30,7 @@ class ColumnClassTest extends SapphireTest {
         ]
     ];
 
-    public function testColumnClass() {
+    public function testColumnClass(): void {
         Config::modify()->set(Configuration::class, 'grid_prefix', 'test-grid');
         $defaultLargeColumnCount = Configuration::config()->get('default_lg_column_count');
         $obj = ColumnClassModel::create([
@@ -43,7 +43,7 @@ class ColumnClassTest extends SapphireTest {
         $this->assertStringContainsString('test-grid-lg-3', $columnClass );
     }
 
-    public function testColumnClassSpecificCount() {
+    public function testColumnClassSpecificCount(): void {
         Config::modify()->set(Configuration::class, 'grid_prefix', 'test-grid');
 
         $specificCount = 2;

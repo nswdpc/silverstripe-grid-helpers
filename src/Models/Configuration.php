@@ -17,18 +17,11 @@ class Configuration {
 
     /**
      * The total number of grid columns in the frontend grid library
-     * @var int
      */
     private static int $max_columns = 12;
 
-    /**
-     * @var string
-     */
     private static string $grid_prefix = "nsw-col";
 
-    /**
-     * @var array
-     */
     private static array $grid_mapping = [
         "xs" => "xs",
         "sm" => "sm",
@@ -39,7 +32,6 @@ class Configuration {
 
     /**
      * Available columns to choose from
-     * @var array
      */
     private static array $card_columns = [
         '1' => '1',
@@ -51,7 +43,6 @@ class Configuration {
 
     /**
      * Default "lg" viewport number of columns
-     * @var int
      */
     private static int $default_lg_column_count = 4;
 
@@ -72,7 +63,7 @@ class Configuration {
     public function ColumnMapping(string $key) : string {
         $prefix = $this->config()->get('grid_prefix');
         $mapping = $this->config()->get('grid_mapping');
-        $breakpoint = !empty($mapping[ $key ]) ? $mapping[$key] : '';
+        $breakpoint = empty($mapping[ $key ]) ? '' : $mapping[$key];
         return $prefix . ($breakpoint ? "-{$breakpoint}" : "-");
     }
 
@@ -84,12 +75,15 @@ class Configuration {
         if(!$sync) {
             return $cols;
         }
+
         if($cols > $desktopColumns) {
             $cols = $desktopColumns;
         }
+
         if($cols == 0) {
             $cols = 1;
         }
+
         return $cols;
     }
 

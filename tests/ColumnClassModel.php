@@ -15,12 +15,12 @@ class ColumnClassModel extends DataObject implements TestOnly {
     /**
      * @inheritdoc
      */
-    private static $table_name = "ColumnClassModel";
+    private static string $table_name = "ColumnClassModel";
 
     /**
      * @inheritdoc
      */
-    private static $db = [
+    private static array $db = [
         'Title' => 'Varchar(255)'
     ];
 

@@ -11,19 +11,20 @@ use SilverStripe\Forms\LiteralField;
 
 /**
  * Apply display choices options to an Element
+ * @property ?string $Subtype
+ * @extends \SilverStripe\ORM\DataExtension<static>
  */
 class ElementDisplayChoiceExtension extends DataExtension
 {
 
     /**
      * Database fields
-     * @var array
      */
-    private static $db = [
+    private static array $db = [
         'Subtype' => 'Varchar(64)'
     ];
 
-    private static $subtypes = [
+    private static array $subtypes = [
         'callout' => 'Callout',
         'notification' => 'Notification',
         'global-alert' => 'Global alert',
@@ -39,7 +40,7 @@ class ElementDisplayChoiceExtension extends DataExtension
         // remove these core fields provided by BaseElement
         $fields->removeByName(['Style','ExtraClass']);
 
-        $inList = $this->owner->isWithinElementList();
+        $inList = $this->getOwner()->isWithinElementList();
         if($inList) {
             $fields->removeByName(['Subtype']);
             $fields->addFieldToTab(
@@ -58,7 +59,7 @@ class ElementDisplayChoiceExtension extends DataExtension
                 DropdownField::create(
                     'Subtype',
                     _t('gridhelpers.DISPLAY_OPTIONS','Display option'),
-                    $this->owner->config()->get('subtypes')
+                    $this->getOwner()->config()->get('subtypes')
                 )
                 ->setEmptyString('none')
             );
@@ -68,7 +69,6 @@ class ElementDisplayChoiceExtension extends DataExtension
 
     /**
      * Determine if this element is within a list, which will set the display requirements if so
-     * @return bool
      */
     public function isWithinElementList() : bool {
 
@@ -76,17 +76,13 @@ class ElementDisplayChoiceExtension extends DataExtension
             return false;
         }
 
-        $parent = $this->owner->Parent();
+        $parent = $this->getOwner()->Parent();
         if(!$parent || !($parent instanceof ElementalArea)) {
             return false;
         }
 
         $list = ElementList::get()->filter(['ElementsID' => $parent->ID])->first();
-        if(!$list || !($list instanceof ElementList)) {
-            return false;
-        }
-
-        return true;
+        return $list && $list instanceof ElementList;
     }
 
     /**
@@ -100,8 +96,8 @@ class ElementDisplayChoiceExtension extends DataExtension
     {
         parent::onBeforeWrite();
         // clear these default settings
-        $this->owner->ExtraClass = '';
-        $this->owner->Style = '';
+        $this->getOwner()->ExtraClass = '';
+        $this->getOwner()->Style = '';
     }
 
 }

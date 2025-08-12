@@ -14,15 +14,16 @@ use SilverStripe\Forms\DropdownField;
  * Applied to ElementList by default, you can apply it to other Elements that contain child items
  * to be rendered into a grid/list or similar template
  * @author James Ellis
+ * @property int $CardColumns
+ * @extends \SilverStripe\ORM\DataExtension<static>
  */
 class ElementChildGridExtension extends DataExtension
 {
 
     /**
      * DB fields
-     * @var array
      */
-    private static $db = [
+    private static array $db = [
         'CardColumns' => 'Int' // grid columns at lg breakpoint
     ];
 
@@ -38,6 +39,7 @@ class ElementChildGridExtension extends DataExtension
 
         $options = $this->getConfigurator()->config()->get('card_columns');
         $options = is_array($options) ? array_unique($options) : [];
+
         $cardColumns = DropdownField::create(
             'CardColumns',
             _t('gridhelpers.COLUMNS','Columns'),
@@ -64,13 +66,14 @@ class ElementChildGridExtension extends DataExtension
      * Allow the owner class to set it's own default via configuration
      */
     public function onBeforeWrite() {
-        if(!$this->owner->CardColumns) {
+        if(!$this->getOwner()->CardColumns) {
             $defaultLargeColumnCount = Configuration::config()->get('default_lg_column_count');
-            $ownerDefaultCount = Config::inst()->get( get_class($this->owner), 'grid_default_lg_column_count');
+            $ownerDefaultCount = Config::inst()->get( $this->getOwner()::class, 'grid_default_lg_column_count');
             if($ownerDefaultCount) {
                 $defaultLargeColumnCount = $ownerDefaultCount;
             }
-            $this->owner->CardColumns = $defaultLargeColumnCount;
+
+            $this->getOwner()->CardColumns = $defaultLargeColumnCount;
         }
     }
 
@@ -78,7 +81,7 @@ class ElementChildGridExtension extends DataExtension
      * This method is retained for BC
      */
     public function getColumns(): string {
-        return $this->owner->ColumnClass( $this->owner->CardColumns );
+        return $this->getOwner()->ColumnClass( $this->getOwner()->CardColumns );
     }
 
     /**
@@ -94,10 +97,10 @@ class ElementChildGridExtension extends DataExtension
     {
 
         $desktopColumns = null;
-        $cardColumns = $this->owner->CardColumns;
-        if(is_int($lg)) {
+        $cardColumns = $this->getOwner()->CardColumns;
+        if (is_int($lg)) {
             $desktopColumns = abs($lg);
-        } else if(is_int($cardColumns)) {
+        } elseif (is_int($cardColumns)) {
             $desktopColumns = abs($cardColumns);
         }
 
@@ -139,6 +142,7 @@ class ElementChildGridExtension extends DataExtension
                 $xl = $this->getConfigurator()->getGridValue($xl, $desktopColumns);
                 $gridXl = ceil($max / $xl);
             }
+
             if(!is_null($gridXl)) {
                 $grids[] = $this->getConfigurator()->ColumnMapping("xl") . "-{$gridXl}";
             }
