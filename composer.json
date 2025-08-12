@@ -30,6 +30,9 @@
         "rector/rector": "^2",
         "nswdpc/ci-files": "dev-v-4"
     },
+    "suggest": {
+        "dnadesign/silverstripe-elemental-list": "Support elements within a list"
+    },
     "config": {
         "allow-plugins": {
             "composer/installers": true,
