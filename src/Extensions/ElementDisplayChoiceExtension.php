@@ -67,7 +67,7 @@ class ElementDisplayChoiceExtension extends DataExtension
                     _t('gridhelpers.DISPLAY_OPTIONS', 'Display option'),
                     $displayOptions
                 )
-                ->setEmptyString('none')
+                ->setEmptyString(_t('gridhelpers.NONE','none'))
             );
         }
 

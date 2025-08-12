@@ -76,7 +76,7 @@ class ElementHasChildrenExtension extends DataExtension
             _t('gridhelpers.LISTTYPE', 'List type'),
             $options
         );
-        $subType->setEmptyString('none');
+        $subType->setEmptyString(_t('gridhelpers.NONE','none'));
 
         // card style, if appropriate
         $options = Config::inst()->get($this->getOwner()::class, 'card_styles');
@@ -87,7 +87,7 @@ class ElementHasChildrenExtension extends DataExtension
             _t('gridhelpers.CARDSTYLE', 'Content style'),
             $options
         );
-        $cardStyle->setEmptyString('none');
+        $cardStyle->setEmptyString(_t('gridhelpers.NONE','none'));
         $cardStyle->displayIf('Subtype')
             ->isEqualTo('cards')
             ->orIf("Subtype")->isEqualTo("carousel")
