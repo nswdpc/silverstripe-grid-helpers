@@ -4,8 +4,8 @@ namespace NSWDPC\GridHelper\Extensions;
 
 use DNADesign\Elemental\Models\ElementalArea;
 use DNADesign\ElementalList\Model\ElementList;
-use Silverstripe\ORM\DataExtension;
-use Silverstripe\Forms\FieldList;
+use SilverStripe\ORM\DataExtension;
+use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\LiteralField;
 
@@ -72,6 +72,10 @@ class ElementDisplayChoiceExtension extends DataExtension
      */
     public function isWithinElementList() : bool {
 
+        if(!class_exists(ElementList::class)) {
+            return false;
+        }
+
         $parent = $this->owner->Parent();
         if(!$parent || !($parent instanceof ElementalArea)) {
             return false;
@@ -88,7 +92,7 @@ class ElementDisplayChoiceExtension extends DataExtension
     /**
      * Remove StyleVariant from elements
      */
-    public function updateStyleVariant() {
+    public function updateStyleVariant(): string {
         return "";
     }
 

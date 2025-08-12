@@ -36,6 +36,7 @@ class ColumnClassTest extends SapphireTest {
         $obj = ColumnClassModel::create([
             'Title' => 'Test model'
         ]);
+        $this->assertTrue($obj->hasExtension(ElementChildGridExtension::class));
         $obj->write();
         $this->assertEquals($defaultLargeColumnCount, $obj->CardColumns);
         $columnClass = $obj->ColumnClass();
@@ -51,6 +52,7 @@ class ColumnClassTest extends SapphireTest {
         $obj = ColumnClassModel::create([
             'Title' => 'Test model'
         ]);
+        $this->assertTrue($obj->hasExtension(ElementChildGridExtension::class));
         $obj->write();
         $this->assertEquals($specificCount, $obj->CardColumns);
         $columnClass = $obj->ColumnClass();

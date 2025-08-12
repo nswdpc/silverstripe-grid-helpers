@@ -19,17 +19,17 @@ class Configuration {
      * The total number of grid columns in the frontend grid library
      * @var int
      */
-    private static $max_columns = 12;
+    private static int $max_columns = 12;
 
     /**
      * @var string
      */
-    private static $grid_prefix = "nsw-col";
+    private static string $grid_prefix = "nsw-col";
 
     /**
-     * @var string
+     * @var array
      */
-    private static $grid_mapping = [
+    private static array $grid_mapping = [
         "xs" => "xs",
         "sm" => "sm",
         "md" => "md",
@@ -41,7 +41,7 @@ class Configuration {
      * Available columns to choose from
      * @var array
      */
-    private static $card_columns = [
+    private static array $card_columns = [
         '1' => '1',
         '2' => '2',
         '3' => '3',
@@ -53,7 +53,7 @@ class Configuration {
      * Default "lg" viewport number of columns
      * @var int
      */
-    private static $default_lg_column_count = 4;
+    private static int $default_lg_column_count = 4;
 
     /**
      * @var bool
@@ -62,14 +62,14 @@ class Configuration {
      * When false, the values used will be as supplied by input
      * See
      */
-    private static $sync_grid_to_desktop = true;
+    private static bool $sync_grid_to_desktop = true;
 
     /**
      * Work out and return the grid mapping based on prefix and a key
      * Use the config values to return the relevant values from configuration
      * To have more control over this, you should extend this class method and inject the class using Silverstripe's Injector.
      */
-    public function ColumnMapping($key) : string {
+    public function ColumnMapping(string $key) : string {
         $prefix = $this->config()->get('grid_prefix');
         $mapping = $this->config()->get('grid_mapping');
         $breakpoint = !empty($mapping[ $key ]) ? $mapping[$key] : '';

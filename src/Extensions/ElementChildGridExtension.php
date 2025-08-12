@@ -4,9 +4,9 @@ namespace NSWDPC\GridHelper\Extensions;
 
 use NSWDPC\GridHelper\Models\Configuration;
 use SilverStripe\Core\Config\Config;
-use Silverstripe\Core\Injector\Injector;
-use Silverstripe\ORM\DataExtension;
-use Silverstripe\Forms\FieldList;
+use SilverStripe\Core\Injector\Injector;
+use SilverStripe\ORM\DataExtension;
+use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\DropdownField;
 
 /**
@@ -77,34 +77,44 @@ class ElementChildGridExtension extends DataExtension
     /**
      * This method is retained for BC
      */
-    public function getColumns() {
+    public function getColumns(): string {
         return $this->owner->ColumnClass( $this->owner->CardColumns );
     }
 
     /**
      * Return the CSS class representing a grid
-     * @param int|null $lg the number of large columns eg 3. Default=null meaning defer to the selected CardColumns value
+     * @param ?int $lg the number of large columns eg 3. Default=null meaning defer to the selected CardColumns value
      * @param int $max the max grid size. Used to work out the CSS class. $max/$lg =  grid 'width'
      * @param int $xs number of columns at XS media size, default = 1 col @ 100% width
      * @param int $sm number of columns at SM media size, default = 2 cols @ 50% width
      * @param int $md number of columns at MD media size, default = 3 cols @ 33.3% width
-     * @param mixed $xl number of columns at XL media size, if supported, default = none
+     * @param ?int $xl number of columns at XL media size, if supported, default = none
      */
-    public function ColumnClass($lg = null, $max = 12, $xs = 1, $sm = 2, $md = 3, $xl = null) : string
+    public function ColumnClass(?int $lg = null, int $max = 12, int $xs = 1, int $sm = 2, int $md = 3, ?int $xl = null) : string
     {
 
+        $desktopColumns = null;
+        $cardColumns = $this->owner->CardColumns;
         if(is_int($lg)) {
-            $desktopColumns = $lg;
-        } else {
-            $desktopColumns = $this->owner->CardColumns;
+            $desktopColumns = abs($lg);
+        } else if(is_int($cardColumns)) {
+            $desktopColumns = abs($cardColumns);
         }
 
-        $max = trim($max);
-        if(!$max) {
+        $max = abs($max);
+        $xs = abs($xs);
+        $sm = abs($sm);
+        $md = abs($md);
+
+        if($max <= 0) {
             $max = $this->getConfigurator()->config()->get('max_columns');
         }
 
-        if(!$desktopColumns) {
+        if(is_int($xl)) {
+            $xl = abs($xl);
+        }
+
+        if(is_null($desktopColumns) || $desktopColumns == 0) {
             return '';
         } else {
 
@@ -125,11 +135,11 @@ class ElementChildGridExtension extends DataExtension
             ];
 
             $gridXl = null;
-            if($xl > 0) {
+            if(is_int($xl) && $xl > 0) {
                 $xl = $this->getConfigurator()->getGridValue($xl, $desktopColumns);
                 $gridXl = ceil($max / $xl);
             }
-            if($gridXl) {
+            if(!is_null($gridXl)) {
                 $grids[] = $this->getConfigurator()->ColumnMapping("xl") . "-{$gridXl}";
             }
 

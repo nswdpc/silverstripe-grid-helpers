@@ -2,8 +2,8 @@
 
 namespace NSWDPC\GridHelper\Extensions;
 
-use Silverstripe\ORM\DataExtension;
-use Silverstripe\Forms\FieldList;
+use SilverStripe\ORM\DataExtension;
+use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\DropdownField;
 
 /**
