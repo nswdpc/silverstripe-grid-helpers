@@ -16,7 +16,6 @@ use SilverStripe\Forms\LiteralField;
  */
 class ElementDisplayChoiceExtension extends DataExtension
 {
-
     /**
      * Database fields
      */
@@ -41,14 +40,14 @@ class ElementDisplayChoiceExtension extends DataExtension
         $fields->removeByName(['Style','ExtraClass']);
 
         $inList = $this->getOwner()->isWithinElementList();
-        if($inList) {
+        if ($inList) {
             $fields->removeByName(['Subtype']);
             $fields->addFieldToTab(
                 'Root.Display',
                 LiteralField::create(
                     'Subtype_Message',
                     '<p class="message info">'
-                        . _t('gridhelpers.ELEMENT_IN_LIST','This element is within a list, which sets the display options')
+                        . _t('gridhelpers.ELEMENT_IN_LIST', 'This element is within a list, which sets the display options')
                     . '</p>'
                 )
             );
@@ -58,7 +57,7 @@ class ElementDisplayChoiceExtension extends DataExtension
                 'Root.Display',
                 DropdownField::create(
                     'Subtype',
-                    _t('gridhelpers.DISPLAY_OPTIONS','Display option'),
+                    _t('gridhelpers.DISPLAY_OPTIONS', 'Display option'),
                     $this->getOwner()->config()->get('subtypes')
                 )
                 ->setEmptyString('none')
@@ -70,14 +69,15 @@ class ElementDisplayChoiceExtension extends DataExtension
     /**
      * Determine if this element is within a list, which will set the display requirements if so
      */
-    public function isWithinElementList() : bool {
+    public function isWithinElementList(): bool
+    {
 
-        if(!class_exists(ElementList::class)) {
+        if (!class_exists(ElementList::class)) {
             return false;
         }
 
         $parent = $this->getOwner()->Parent();
-        if(!$parent || !($parent instanceof ElementalArea)) {
+        if (!$parent || !($parent instanceof ElementalArea)) {
             return false;
         }
 
@@ -88,7 +88,8 @@ class ElementDisplayChoiceExtension extends DataExtension
     /**
      * Remove StyleVariant from elements
      */
-    public function updateStyleVariant(): string {
+    public function updateStyleVariant(): string
+    {
         return "";
     }
 

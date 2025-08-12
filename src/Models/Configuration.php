@@ -10,8 +10,8 @@ use SilverStripe\Core\Config\Configurable;
  * You can extend and inject your own configuration model as required
  * @author James
  */
-class Configuration {
-
+class Configuration
+{
     use Configurable;
     use Extensible;
 
@@ -60,7 +60,8 @@ class Configuration {
      * Use the config values to return the relevant values from configuration
      * To have more control over this, you should extend this class method and inject the class using Silverstripe's Injector.
      */
-    public function ColumnMapping(string $key) : string {
+    public function ColumnMapping(string $key): string
+    {
         $prefix = $this->config()->get('grid_prefix');
         $mapping = $this->config()->get('grid_mapping');
         $breakpoint = empty($mapping[ $key ]) ? '' : $mapping[$key];
@@ -70,17 +71,18 @@ class Configuration {
     /**
      * Determine grid value based on configuration and desktop value
      */
-    public function getGridValue(int $cols, int $desktopColumns) : int {
+    public function getGridValue(int $cols, int $desktopColumns): int
+    {
         $sync = $this->config()->get('sync_grid_to_desktop');
-        if(!$sync) {
+        if (!$sync) {
             return $cols;
         }
 
-        if($cols > $desktopColumns) {
+        if ($cols > $desktopColumns) {
             $cols = $desktopColumns;
         }
 
-        if($cols == 0) {
+        if ($cols == 0) {
             $cols = 1;
         }
 

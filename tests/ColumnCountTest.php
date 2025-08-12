@@ -10,8 +10,8 @@ use SilverStripe\Dev\SapphireTest;
 /**
  * Column count test
  */
-class ColumnCountTest extends SapphireTest {
-
+class ColumnCountTest extends SapphireTest
+{
     protected $usesDatabase =  true;
 
     /**
@@ -30,7 +30,8 @@ class ColumnCountTest extends SapphireTest {
         ]
     ];
 
-    public function testColumnCount(): void {
+    public function testColumnCount(): void
+    {
         $defaultLargeColumnCount = Configuration::config()->get('default_lg_column_count');
         $obj = ColumnCountModel::create([
             'Title' => 'Test model'
@@ -39,7 +40,8 @@ class ColumnCountTest extends SapphireTest {
         $this->assertEquals($defaultLargeColumnCount, $obj->CardColumns);
     }
 
-    public function testColumnSpecificCount(): void {
+    public function testColumnSpecificCount(): void
+    {
         Configuration::config()->get('default_lg_column_count');
         $specificCount = 2;
         Config::modify()->set(ColumnCountModel::class, 'grid_default_lg_column_count', $specificCount);

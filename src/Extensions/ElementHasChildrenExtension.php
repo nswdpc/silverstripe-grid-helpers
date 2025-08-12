@@ -16,8 +16,8 @@ use SilverStripe\Forms\DropdownField;
  */
 class ElementHasChildrenExtension extends DataExtension
 {
-
-    public function ElementHasChildren(): bool {
+    public function ElementHasChildren(): bool
+    {
         return true;
     }
 
@@ -72,7 +72,7 @@ class ElementHasChildrenExtension extends DataExtension
 
         $subType = DropdownField::create(
             'Subtype',
-            _t('gridhelpers.LISTTYPE','List type'),
+            _t('gridhelpers.LISTTYPE', 'List type'),
             $options
         );
         $subType->setEmptyString('none');
@@ -83,7 +83,7 @@ class ElementHasChildrenExtension extends DataExtension
 
         $cardStyle = DropdownField::create(
             'CardStyle',
-            _t('gridhelpers.CARDSTYLE','Content style'),
+            _t('gridhelpers.CARDSTYLE', 'Content style'),
             $options
         );
         $cardStyle->setEmptyString('none');
