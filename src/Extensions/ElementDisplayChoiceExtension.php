@@ -57,7 +57,7 @@ class ElementDisplayChoiceExtension extends DataExtension
             );
         } else {
             $displayOptions = Config::inst()->get($this->getOwner()::class, 'subtypes');
-            if(!is_array($displayOptions)) {
+            if (!is_array($displayOptions)) {
                 $displayOptions = [];
             }
 
@@ -68,7 +68,7 @@ class ElementDisplayChoiceExtension extends DataExtension
                     _t('gridhelpers.DISPLAY_OPTIONS', 'Display option'),
                     $displayOptions
                 )
-                ->setEmptyString(_t('gridhelpers.NONE','none'))
+                ->setEmptyString(_t('gridhelpers.NONE', 'none'))
             );
         }
 

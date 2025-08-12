@@ -44,7 +44,7 @@ class ElementChildGridExtension extends DataExtension
             'CardColumns',
             _t('gridhelpers.COLUMNS', 'Columns'),
             $options
-        )->setEmptyString(_t('gridhelpers.NOT_SET','not set'))
+        )->setEmptyString(_t('gridhelpers.NOT_SET', 'not set'))
         ->setDescription(
             _t(
                 'gridhelpers.CHOOSE_THE_NUMBER_OF_COLUMNS',
