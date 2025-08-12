@@ -60,6 +60,7 @@ class ElementDisplayChoiceExtension extends DataExtension
             if(!is_array($displayOptions)) {
                 $displayOptions = [];
             }
+
             $fields->addFieldToTab(
                 'Root.Display',
                 DropdownField::create(
