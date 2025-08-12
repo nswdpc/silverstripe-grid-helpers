@@ -67,6 +67,7 @@ class ElementChildGridExtension extends DataExtension
      */
     public function onBeforeWrite()
     {
+        /** @phpstan-ignore property.notFound */
         if (!$this->getOwner()->CardColumns) {
             $defaultLargeColumnCount = Configuration::config()->get('default_lg_column_count');
             $ownerDefaultCount = Config::inst()->get($this->getOwner()::class, 'grid_default_lg_column_count');
@@ -83,6 +84,7 @@ class ElementChildGridExtension extends DataExtension
      */
     public function getColumns(): string
     {
+        /** @phpstan-ignore property.notFound */
         return $this->getOwner()->ColumnClass($this->getOwner()->CardColumns);
     }
 
@@ -99,6 +101,7 @@ class ElementChildGridExtension extends DataExtension
     {
 
         $desktopColumns = null;
+        /** @phpstan-ignore property.notFound */
         $cardColumns = $this->getOwner()->CardColumns;
         if (is_int($lg)) {
             $desktopColumns = abs($lg);

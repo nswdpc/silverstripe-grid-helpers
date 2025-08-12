@@ -2,6 +2,7 @@
 
 namespace NSWDPC\GridHelper\Extensions;
 
+use SilverStripe\Core\Config\Config;
 use SilverStripe\ORM\DataExtension;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\DropdownField;
@@ -67,7 +68,7 @@ class ElementHasChildrenExtension extends DataExtension
     {
 
         // the subtype
-        $options = $this->getOwner()->config()->get('subtypes');
+        $options = Config::inst()->get($this->getOwner()::class, 'subtypes');
         $options = is_array($options) ? array_unique($options) : [];
 
         $subType = DropdownField::create(
@@ -78,7 +79,7 @@ class ElementHasChildrenExtension extends DataExtension
         $subType->setEmptyString('none');
 
         // card style, if appropriate
-        $options = $this->getOwner()->config()->get('card_styles');
+        $options = Config::inst()->get($this->getOwner()::class, 'card_styles');
         $options = is_array($options) ? array_unique($options) : [];
 
         $cardStyle = DropdownField::create(

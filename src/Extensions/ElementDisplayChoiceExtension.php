@@ -4,6 +4,7 @@ namespace NSWDPC\GridHelper\Extensions;
 
 use DNADesign\Elemental\Models\ElementalArea;
 use DNADesign\ElementalList\Model\ElementList;
+use SilverStripe\Core\Config\Config;
 use SilverStripe\ORM\DataExtension;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\DropdownField;
@@ -52,13 +53,16 @@ class ElementDisplayChoiceExtension extends DataExtension
                 )
             );
         } else {
-            // Add a
+            $displayOptions = Config::inst()->get($this->getOwner()::class, 'subtypes');
+            if(!is_array($displayOptions)) {
+                $displayOptions = [];
+            }
             $fields->addFieldToTab(
                 'Root.Display',
                 DropdownField::create(
                     'Subtype',
                     _t('gridhelpers.DISPLAY_OPTIONS', 'Display option'),
-                    $this->getOwner()->config()->get('subtypes')
+                    $displayOptions
                 )
                 ->setEmptyString('none')
             );
@@ -76,6 +80,7 @@ class ElementDisplayChoiceExtension extends DataExtension
             return false;
         }
 
+        /** @phpstan-ignore method.notFound */
         $parent = $this->getOwner()->Parent();
         if (!$parent || !($parent instanceof ElementalArea)) {
             return false;
@@ -97,7 +102,9 @@ class ElementDisplayChoiceExtension extends DataExtension
     {
         parent::onBeforeWrite();
         // clear these default settings
+        /** @phpstan-ignore property.notFound */
         $this->getOwner()->ExtraClass = '';
+        /** @phpstan-ignore property.notFound */
         $this->getOwner()->Style = '';
     }
 
