@@ -5,7 +5,7 @@ namespace NSWDPC\GridHelper\Extensions;
 use NSWDPC\GridHelper\Models\Configuration;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Core\Injector\Injector;
-use SilverStripe\ORM\DataExtension;
+use SilverStripe\Core\Extension;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\DropdownField;
 
@@ -15,9 +15,9 @@ use SilverStripe\Forms\DropdownField;
  * to be rendered into a grid/list or similar template
  * @author James Ellis
  * @property int $CardColumns
- * @extends \SilverStripe\ORM\DataExtension<static>
+ * @extends \SilverStripe\Core\Extension<static>
  */
-class ElementChildGridExtension extends DataExtension
+class ElementChildGridExtension extends Extension
 {
     /**
      * DB fields
