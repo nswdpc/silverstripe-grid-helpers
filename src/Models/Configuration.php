@@ -82,7 +82,7 @@ class Configuration
             $cols = $desktopColumns;
         }
 
-        if ($cols == 0) {
+        if ($cols === 0) {
             $cols = 1;
         }
 
