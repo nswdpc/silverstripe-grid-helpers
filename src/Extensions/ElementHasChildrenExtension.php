@@ -3,7 +3,7 @@
 namespace NSWDPC\GridHelper\Extensions;
 
 use SilverStripe\Core\Config\Config;
-use SilverStripe\ORM\DataExtension;
+use SilverStripe\Core\Extension;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\DropdownField;
 
@@ -13,9 +13,9 @@ use SilverStripe\Forms\DropdownField;
  * @author Mark Taylor
  * @property ?string $Subtype
  * @property ?string $CardStyle
- * @extends \SilverStripe\ORM\DataExtension<static>
+ * @extends \SilverStripe\Core\Extension<static>
  */
-class ElementHasChildrenExtension extends DataExtension
+class ElementHasChildrenExtension extends Extension
 {
     public function ElementHasChildren(): bool
     {

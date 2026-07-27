@@ -5,7 +5,7 @@ namespace NSWDPC\GridHelper\Extensions;
 use DNADesign\Elemental\Models\ElementalArea;
 use DNADesign\ElementalList\Model\ElementList;
 use SilverStripe\Core\Config\Config;
-use SilverStripe\ORM\DataExtension;
+use SilverStripe\Core\Extension;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\LiteralField;
@@ -13,9 +13,9 @@ use SilverStripe\Forms\LiteralField;
 /**
  * Apply display choices options to an Element
  * @property ?string $Subtype
- * @extends \SilverStripe\ORM\DataExtension<static>
+ * @extends \SilverStripe\Core\Extension<static>
  */
-class ElementDisplayChoiceExtension extends DataExtension
+class ElementDisplayChoiceExtension extends Extension
 {
     /**
      * Database fields
@@ -104,7 +104,6 @@ class ElementDisplayChoiceExtension extends DataExtension
 
     public function onBeforeWrite()
     {
-        parent::onBeforeWrite();
         // clear these default settings
         /** @phpstan-ignore property.notFound */
         $this->getOwner()->ExtraClass = '';
