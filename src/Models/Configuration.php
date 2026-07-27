@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace NSWDPC\GridHelper\Models;
 
 use SilverStripe\Core\Extensible;
@@ -82,7 +84,7 @@ class Configuration
             $cols = $desktopColumns;
         }
 
-        if ($cols == 0) {
+        if ($cols === 0) {
             $cols = 1;
         }
 
