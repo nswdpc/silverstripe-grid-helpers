@@ -4,26 +4,27 @@ namespace NSWDPC\GridHelper\Extensions;
 
 use DNADesign\Elemental\Models\ElementalArea;
 use DNADesign\ElementalList\Model\ElementList;
-use Silverstripe\ORM\DataExtension;
-use Silverstripe\Forms\FieldList;
+use SilverStripe\Core\Config\Config;
+use SilverStripe\ORM\DataExtension;
+use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\LiteralField;
 
 /**
  * Apply display choices options to an Element
+ * @property ?string $Subtype
+ * @extends \SilverStripe\ORM\DataExtension<static>
  */
 class ElementDisplayChoiceExtension extends DataExtension
 {
-
     /**
      * Database fields
-     * @var array
      */
-    private static $db = [
+    private static array $db = [
         'Subtype' => 'Varchar(64)'
     ];
 
-    private static $subtypes = [
+    private static array $subtypes = [
         'callout' => 'Callout',
         'notification' => 'Notification',
         'global-alert' => 'Global alert',
@@ -39,28 +40,35 @@ class ElementDisplayChoiceExtension extends DataExtension
         // remove these core fields provided by BaseElement
         $fields->removeByName(['Style','ExtraClass']);
 
-        $inList = $this->owner->isWithinElementList();
-        if($inList) {
+        $inList = $this->getOwner()->isWithinElementList();
+        if ($inList) {
             $fields->removeByName(['Subtype']);
             $fields->addFieldToTab(
                 'Root.Display',
                 LiteralField::create(
                     'Subtype_Message',
                     '<p class="message info">'
-                        . _t('gridhelpers.ELEMENT_IN_LIST','This element is within a list, which sets the display options')
+                    . htmlspecialchars(_t(
+                        'gridhelpers.ELEMENT_IN_LIST',
+                        'This element is within a list, which sets the display options'
+                    ))
                     . '</p>'
                 )
             );
         } else {
-            // Add a
+            $displayOptions = Config::inst()->get($this->getOwner()::class, 'subtypes');
+            if (!is_array($displayOptions)) {
+                $displayOptions = [];
+            }
+
             $fields->addFieldToTab(
                 'Root.Display',
                 DropdownField::create(
                     'Subtype',
-                    _t('gridhelpers.DISPLAY_OPTIONS','Display option'),
-                    $this->owner->config()->get('subtypes')
+                    _t('gridhelpers.DISPLAY_OPTIONS', 'Display option'),
+                    $displayOptions
                 )
-                ->setEmptyString('none')
+                ->setEmptyString(_t('gridhelpers.NONE', 'none'))
             );
         }
 
@@ -68,27 +76,29 @@ class ElementDisplayChoiceExtension extends DataExtension
 
     /**
      * Determine if this element is within a list, which will set the display requirements if so
-     * @return bool
      */
-    public function isWithinElementList() : bool {
+    public function isWithinElementList(): bool
+    {
 
-        $parent = $this->owner->Parent();
-        if(!$parent || !($parent instanceof ElementalArea)) {
+        if (!class_exists(ElementList::class)) {
+            return false;
+        }
+
+        /** @phpstan-ignore method.notFound */
+        $parent = $this->getOwner()->Parent();
+        if (!$parent || !($parent instanceof ElementalArea)) {
             return false;
         }
 
         $list = ElementList::get()->filter(['ElementsID' => $parent->ID])->first();
-        if(!$list || !($list instanceof ElementList)) {
-            return false;
-        }
-
-        return true;
+        return $list && $list instanceof ElementList;
     }
 
     /**
      * Remove StyleVariant from elements
      */
-    public function updateStyleVariant() {
+    public function updateStyleVariant(): string
+    {
         return "";
     }
 
@@ -96,8 +106,10 @@ class ElementDisplayChoiceExtension extends DataExtension
     {
         parent::onBeforeWrite();
         // clear these default settings
-        $this->owner->ExtraClass = '';
-        $this->owner->Style = '';
+        /** @phpstan-ignore property.notFound */
+        $this->getOwner()->ExtraClass = '';
+        /** @phpstan-ignore property.notFound */
+        $this->getOwner()->Style = '';
     }
 
 }

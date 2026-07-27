@@ -2,36 +2,38 @@
 
 namespace NSWDPC\GridHelper\Extensions;
 
-use Silverstripe\ORM\DataExtension;
-use Silverstripe\Forms\FieldList;
+use SilverStripe\Core\Config\Config;
+use SilverStripe\ORM\DataExtension;
+use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\DropdownField;
 
 /**
  * Extension applied to Elements that can contain other elements
  * @author James Ellis
  * @author Mark Taylor
+ * @property ?string $Subtype
+ * @property ?string $CardStyle
+ * @extends \SilverStripe\ORM\DataExtension<static>
  */
 class ElementHasChildrenExtension extends DataExtension
 {
-
-    public function ElementHasChildren() {
+    public function ElementHasChildren(): bool
+    {
         return true;
     }
 
     /**
      * DB fields for the list element
-     * @var array
      */
-    private static $db = [
+    private static array $db = [
         'Subtype' => 'Varchar(64)',
         'CardStyle' => 'Varchar(64)'
     ];
 
     /**
      * Available types of listings
-     * @var array
      */
-    private static $subtypes = [
+    private static array $subtypes = [
         'accordion' => 'Accordion',
         'cards' => 'Cards',
         'carousel' => 'Carousel',
@@ -45,9 +47,8 @@ class ElementHasChildrenExtension extends DataExtension
 
     /**
      * Default values
-     * @var array
      */
-    private static $defaults = [
+    private static array $defaults = [
         'Subtype' => '',// no default
         'CardStyle' => 'title-abstract'
     ];
@@ -55,9 +56,8 @@ class ElementHasChildrenExtension extends DataExtension
     /**
      * Used to **hint* how list child elements are rendered.
      * A template can use a key value from here to determine how to render the child items
-     * @var array
      */
-    private static $card_styles = [
+    private static array $card_styles = [
         'title' => 'Title only',
         'title-abstract' => 'Title and abstract',
         'title-image-abstract' => 'Title, image, abstract',
@@ -68,24 +68,26 @@ class ElementHasChildrenExtension extends DataExtension
     {
 
         // the subtype
-        $options = $this->owner->config()->get('subtypes');
+        $options = Config::inst()->get($this->getOwner()::class, 'subtypes');
         $options = is_array($options) ? array_unique($options) : [];
+
         $subType = DropdownField::create(
             'Subtype',
-            _t('gridhelpers.LISTTYPE','List type'),
+            _t('gridhelpers.LISTTYPE', 'List type'),
             $options
         );
-        $subType->setEmptyString('none');
+        $subType->setEmptyString(_t('gridhelpers.NONE', 'none'));
 
         // card style, if appropriate
-        $options = $this->owner->config()->get('card_styles');
+        $options = Config::inst()->get($this->getOwner()::class, 'card_styles');
         $options = is_array($options) ? array_unique($options) : [];
+
         $cardStyle = DropdownField::create(
             'CardStyle',
-            _t('gridhelpers.CARDSTYLE','Content style'),
+            _t('gridhelpers.CARDSTYLE', 'Content style'),
             $options
         );
-        $cardStyle->setEmptyString('none');
+        $cardStyle->setEmptyString(_t('gridhelpers.NONE', 'none'));
         $cardStyle->displayIf('Subtype')
             ->isEqualTo('cards')
             ->orIf("Subtype")->isEqualTo("carousel")

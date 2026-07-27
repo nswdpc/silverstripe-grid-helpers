@@ -10,8 +10,8 @@ use SilverStripe\Dev\SapphireTest;
 /**
  * Column class test
  */
-class ColumnClassTest extends SapphireTest {
-
+class ColumnClassTest extends SapphireTest
+{
     protected $usesDatabase =  true;
 
     /**
@@ -30,19 +30,22 @@ class ColumnClassTest extends SapphireTest {
         ]
     ];
 
-    public function testColumnClass() {
+    public function testColumnClass(): void
+    {
         Config::modify()->set(Configuration::class, 'grid_prefix', 'test-grid');
         $defaultLargeColumnCount = Configuration::config()->get('default_lg_column_count');
         $obj = ColumnClassModel::create([
             'Title' => 'Test model'
         ]);
+        $this->assertTrue($obj->hasExtension(ElementChildGridExtension::class));
         $obj->write();
         $this->assertEquals($defaultLargeColumnCount, $obj->CardColumns);
         $columnClass = $obj->ColumnClass();
-        $this->assertStringContainsString('test-grid-lg-3', $columnClass );
+        $this->assertStringContainsString('test-grid-lg-3', $columnClass);
     }
 
-    public function testColumnClassSpecificCount() {
+    public function testColumnClassSpecificCount(): void
+    {
         Config::modify()->set(Configuration::class, 'grid_prefix', 'test-grid');
 
         $specificCount = 2;
@@ -51,12 +54,13 @@ class ColumnClassTest extends SapphireTest {
         $obj = ColumnClassModel::create([
             'Title' => 'Test model'
         ]);
+        $this->assertTrue($obj->hasExtension(ElementChildGridExtension::class));
         $obj->write();
         $this->assertEquals($specificCount, $obj->CardColumns);
         $columnClass = $obj->ColumnClass();
-        $this->assertStringContainsString('test-grid-lg-6', $columnClass );
-        $this->assertStringContainsString('test-grid-md-6', $columnClass );
-        $this->assertStringContainsString('test-grid-sm-6', $columnClass );
+        $this->assertStringContainsString('test-grid-lg-6', $columnClass);
+        $this->assertStringContainsString('test-grid-md-6', $columnClass);
+        $this->assertStringContainsString('test-grid-sm-6', $columnClass);
     }
 
 }

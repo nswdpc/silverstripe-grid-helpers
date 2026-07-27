@@ -112,7 +112,7 @@ As with all things Silverstripe, the frontend/template implementation is entirel
 
 ## Maintainers
 
-+ [dpcdigital@NSWDPC:~$](https://dpc.nsw.gov.au)
++ PD Web Team
 
 ## Bugtracker
 
